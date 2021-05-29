@@ -10,12 +10,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.serratec.apirestfull.domain.Categoria;
 import com.serratec.apirestfull.domain.Produto;
 import com.serratec.apirestfull.repositories.CategoriaRepository;
+import com.serratec.apirestfull.repositories.ProdutoRepository;
 
 @SpringBootApplication
 public class SerratecApplication implements CommandLineRunner {
 
 	@Autowired
 	CategoriaRepository categoriaRepo;
+	
+	@Autowired
+	ProdutoRepository produtoRepo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SerratecApplication.class, args);
@@ -43,6 +47,7 @@ public class SerratecApplication implements CommandLineRunner {
 		
 		
 		categoriaRepo.saveAll(Arrays.asList(cat1,cat2));
+		produtoRepo.saveAll(Arrays.asList(p1,p2,p3));
 		
 	}
 	

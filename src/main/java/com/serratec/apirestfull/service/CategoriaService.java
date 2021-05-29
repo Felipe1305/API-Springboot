@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.serratec.apirestfull.domain.Categoria;
 import com.serratec.apirestfull.repositories.CategoriaRepository;
+import com.serratec.apirestfull.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -16,6 +17,7 @@ public class CategoriaService {
 
 		public Categoria buscar(Integer id) {
 			Optional<Categoria> obj = repo.findById(id);
-			return obj.orElse(null);
+			return obj.orElseThrow(() -> new ObjectNotFoundException(
+					"Objeto não encontrado! ID: "+id+", Tipo: "+Categoria.class.getName()));
 		}
 }
