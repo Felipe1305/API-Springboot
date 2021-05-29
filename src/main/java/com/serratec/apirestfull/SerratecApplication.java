@@ -9,9 +9,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.serratec.apirestfull.domain.Categoria;
 import com.serratec.apirestfull.domain.Cidade;
+import com.serratec.apirestfull.domain.Cliente;
+import com.serratec.apirestfull.domain.Endereco;
 import com.serratec.apirestfull.domain.Estado;
 import com.serratec.apirestfull.domain.Produto;
+import com.serratec.apirestfull.domain.enums.TipoCliente;
 import com.serratec.apirestfull.repositories.CategoriaRepository;
+import com.serratec.apirestfull.repositories.CidadeRepository;
+import com.serratec.apirestfull.repositories.EstadoRepository;
 import com.serratec.apirestfull.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -26,6 +31,11 @@ public class SerratecApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(SerratecApplication.class, args);
 	}
+	@Autowired
+	private EstadoRepository estadoRepo;
+	
+	@Autowired
+	private CidadeRepository cidadeRepo;
 
 	
 	
@@ -60,6 +70,18 @@ public class SerratecApplication implements CommandLineRunner {
 		
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2,c3));
+		
+		estadoRepo.saveAll(Arrays.asList(est1,est2));
+		cidadeRepo.saveAll(Arrays.asList(c1,c2,c3));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOA_FISICA);
+		cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+	
+		
 		
 	}
 	
