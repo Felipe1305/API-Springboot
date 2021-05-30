@@ -1,5 +1,6 @@
 package com.serratec.apirestfull;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.serratec.apirestfull.domain.Cidade;
 import com.serratec.apirestfull.domain.Cliente;
 import com.serratec.apirestfull.domain.Endereco;
 import com.serratec.apirestfull.domain.Estado;
+import com.serratec.apirestfull.domain.Pagamento;
+import com.serratec.apirestfull.domain.PagamentoComBoleto;
+import com.serratec.apirestfull.domain.PagamentoComCartao;
+import com.serratec.apirestfull.domain.Pedido;
 import com.serratec.apirestfull.domain.Produto;
+import com.serratec.apirestfull.domain.enums.EstadoPagamento;
 import com.serratec.apirestfull.domain.enums.TipoCliente;
 import com.serratec.apirestfull.repositories.CategoriaRepository;
 import com.serratec.apirestfull.repositories.CidadeRepository;
 import com.serratec.apirestfull.repositories.ClienteRepository;
 import com.serratec.apirestfull.repositories.EnderecoRepository;
 import com.serratec.apirestfull.repositories.EstadoRepository;
+import com.serratec.apirestfull.repositories.PagamentoRepository;
+import com.serratec.apirestfull.repositories.PedidoRepository;
 import com.serratec.apirestfull.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -45,6 +53,12 @@ public class SerratecApplication implements CommandLineRunner {
 	
 	@Autowired
 	private ClienteRepository clienteRepo;
+	
+	@Autowired
+	private PedidoRepository pedidoRepo;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepo;
 	
 	
 	@Override
@@ -89,7 +103,25 @@ public class SerratecApplication implements CommandLineRunner {
 		clienteRepo.saveAll(Arrays.asList(cli1));
 		enderecoRepo.saveAll(Arrays.asList(e1,e2));
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
+		ped2.setPagamento(pagto2);
 
+		cli1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		
+		
+		
+		pedidoRepo.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepo.saveAll(Arrays.asList(pagto1,pagto2));
+		
+		
 	}
 
 }
