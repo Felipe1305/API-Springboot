@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.serratec.apirestfull.DTO.CategoriaDTO;
 import com.serratec.apirestfull.domain.Categoria;
 import com.serratec.apirestfull.repositories.CategoriaRepository;
 import com.serratec.apirestfull.service.exceptions.DataIntegrityException;
@@ -53,5 +54,9 @@ public class CategoriaService {
 	public Page<Categoria> buscandoPorPaginas(Integer page, Integer linhasPorPagina, String orderBy, String direction){
 		PageRequest pageRequest = PageRequest.of(page, linhasPorPagina,Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDTO) {
+		return new Categoria(objDTO.getId(), objDTO.getNome());
 	}
 }
