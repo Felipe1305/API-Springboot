@@ -13,6 +13,7 @@ import com.serratec.apirestfull.domain.Cidade;
 import com.serratec.apirestfull.domain.Cliente;
 import com.serratec.apirestfull.domain.Endereco;
 import com.serratec.apirestfull.domain.Estado;
+import com.serratec.apirestfull.domain.ItemPedido;
 import com.serratec.apirestfull.domain.Pagamento;
 import com.serratec.apirestfull.domain.PagamentoComBoleto;
 import com.serratec.apirestfull.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.serratec.apirestfull.repositories.CidadeRepository;
 import com.serratec.apirestfull.repositories.ClienteRepository;
 import com.serratec.apirestfull.repositories.EnderecoRepository;
 import com.serratec.apirestfull.repositories.EstadoRepository;
+import com.serratec.apirestfull.repositories.ItemPedidoRepository;
 import com.serratec.apirestfull.repositories.PagamentoRepository;
 import com.serratec.apirestfull.repositories.PedidoRepository;
 import com.serratec.apirestfull.repositories.ProdutoRepository;
@@ -59,6 +61,9 @@ public class SerratecApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepo;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepo;
 	
 	
 	@Override
@@ -121,6 +126,18 @@ public class SerratecApplication implements CommandLineRunner {
 		pedidoRepo.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepo.saveAll(Arrays.asList(pagto1,pagto2));
 		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip1,ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepo.saveAll(Arrays.asList(ip1,ip2,ip3));
 		
 	}
 
