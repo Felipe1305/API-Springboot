@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.serratec.apirestfull.DTO.CategoriaDTO;
 import com.serratec.apirestfull.domain.Categoria;
+import com.serratec.apirestfull.domain.Cliente;
 import com.serratec.apirestfull.repositories.CategoriaRepository;
 import com.serratec.apirestfull.service.exceptions.DataIntegrityException;
 import com.serratec.apirestfull.service.exceptions.ObjectNotFoundException;
@@ -34,9 +35,11 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
-		buscar(obj.getId());
-		return repo.save(obj);
+		Categoria newObj = buscar(obj.getId());
+		updateData(newObj,obj);
+		return repo.save(newObj);
 	}
+
 
 	public void delete(Integer id) {
 		buscar(id);
@@ -58,5 +61,10 @@ public class CategoriaService {
 	
 	public Categoria fromDTO(CategoriaDTO objDTO) {
 		return new Categoria(objDTO.getId(), objDTO.getNome());
+	}
+	
+	private void updateData (Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
+		
 	}
 }
