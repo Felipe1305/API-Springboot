@@ -4,6 +4,7 @@ package com.serratec.apirestfull.resources;
 
 
 import java.net.URI;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,7 @@ import com.serratec.apirestfull.DTO.ClienteNewDTO;
 import com.serratec.apirestfull.domain.Cliente;
 import com.serratec.apirestfull.service.ClienteService;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping(value="/clientes")
 public class ClienteResource {
