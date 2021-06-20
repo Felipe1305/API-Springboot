@@ -13,9 +13,11 @@ import com.serratec.apirestfull.domain.ItemPedido;
 import com.serratec.apirestfull.domain.PagamentoComBoleto;
 import com.serratec.apirestfull.domain.Pedido;
 import com.serratec.apirestfull.domain.enums.EstadoPagamento;
+import com.serratec.apirestfull.repositories.ClienteRepository;
 import com.serratec.apirestfull.repositories.ItemPedidoRepository;
 import com.serratec.apirestfull.repositories.PagamentoRepository;
 import com.serratec.apirestfull.repositories.PedidoRepository;
+import com.serratec.apirestfull.repositories.ProdutoRepository;
 import com.serratec.apirestfull.service.exceptions.ObjectNotFoundException;
 
 @Service
@@ -33,6 +35,10 @@ public class PedidoService {
 	
 	@Autowired
 	private ItemPedidoRepository itemRepo;
+	
+	@Autowired ClienteRepository cliRepo;
+	
+	@Autowired ProdutoRepository prodRepo;
 
 		public Pedido buscar(Integer id) {
 			Optional<Pedido> obj = repo.findById(id);
@@ -44,6 +50,7 @@ public class PedidoService {
 		public @Valid Pedido insert(@Valid Pedido obj) {
 			obj.setId(null);
 			obj.setInstante(new Date());
+			obj.setCliente(cliRepo.findById(obj.getCliente().getId()).get());
 			obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 			obj.getPagamento().setPedido(obj);
 			if(obj.getPagamento() instanceof PagamentoComBoleto ) {
@@ -55,10 +62,14 @@ public class PedidoService {
 			
 			for (ItemPedido ip : obj.getItens()) {
 				ip.setDesconto(0.0);
-				ip.setPreco(prodService.buscar(ip.getProduto().getId()).getPreco());
+//				ip.setPreco(prodService.buscar(ip.getProduto().getId()).getPreco());
+				ip.setProduto(prodService.buscar(ip.getProduto().getId()));
+				ip.setPreco(ip.getProduto().getPreco());
 				ip.setPedido(obj);
 			}
 			itemRepo.saveAll(obj.getItens());
+			
+			System.out.println(obj);
 			return obj;
 		}
 }
