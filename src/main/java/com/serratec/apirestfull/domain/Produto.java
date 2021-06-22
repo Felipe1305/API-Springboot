@@ -40,6 +40,8 @@ public class Produto  implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy="id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();
+	
+	private String urlImagem;
 
 
 	public Produto() {
@@ -125,6 +127,14 @@ public class Produto  implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public String getUrlImagem() {
+		return urlImagem;
+	}
+
+	public void setUrlImagem(String urlImagem) {
+		this.urlImagem = urlImagem;
 	}
 
 	

@@ -25,6 +25,14 @@ public class ProdutoResource {
 
 	@Autowired
 	private ProdutoService service;
+	
+	@RequestMapping(value="/todos", method = RequestMethod.GET)
+	public ResponseEntity<List<Produto>> getAll() {
+
+		List<Produto> obj = service.findAll();
+		return ResponseEntity.ok().body(obj);
+
+	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Produto> find(@PathVariable Integer id) {
@@ -34,7 +42,7 @@ public class ProdutoResource {
 
 	}
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value="/pesquisar",method = RequestMethod.GET)
 	public ResponseEntity<Page<ProdutoDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "nome", defaultValue = "") String nome,
 			@RequestParam(value = "categorias", defaultValue = "") String categorias,
@@ -43,10 +51,10 @@ public class ProdutoResource {
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 
-		List<Integer> ids = URL.decodeIntList(categorias);
+//		List<Integer> ids = URL.decodeIntList(categorias);
 		String nomeDecoded = URL.decodeParam(nome);
 		
-		Page<Produto> list = service.search(nomeDecoded, ids, page, linhasPorPagina, orderBy, direction);
+		Page<Produto> list = service.search(nomeDecoded, page, linhasPorPagina, orderBy, direction);
 		Page<ProdutoDTO> listDTO = list.map(obj -> new ProdutoDTO(obj));
 		return ResponseEntity.ok().body(listDTO);
 

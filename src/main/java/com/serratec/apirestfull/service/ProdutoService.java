@@ -30,9 +30,15 @@ public class ProdutoService {
 					"Produto não encontrado! ID: "+id+", Tipo: "+Produto.class.getName()));
 		}
 		
-		public Page<Produto> search(String nome, List<Integer> ids, Integer page, Integer linhasPorPagina, String orderBy, String direction){
+		public Page<Produto> search(String nome, Integer page, Integer linhasPorPagina, String orderBy, String direction){
 			PageRequest pageRequest = PageRequest.of(page, linhasPorPagina,Direction.valueOf(direction), orderBy);
-			List<Categoria> categorias = categoriaRepo.findAllById(ids);
-			return repo.search(nome,categorias,pageRequest);
+//			List<Categoria> categorias = categoriaRepo.findAllById(ids);
+			return repo.search(nome,pageRequest);
+		}
+
+		public List<Produto> findAll() {
+			// TODO Auto-generated method stub
+			List<Produto> list = repo.findAll();
+			return list;
 		}
 }
