@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.serratec.apirestfull.DTO.ProdutoDTO;
 import com.serratec.apirestfull.domain.Categoria;
 import com.serratec.apirestfull.domain.Produto;
 import com.serratec.apirestfull.repositories.CategoriaRepository;
@@ -40,5 +41,31 @@ public class ProdutoService {
 			// TODO Auto-generated method stub
 			List<Produto> list = repo.findAll();
 			return list;
+		}
+
+		public ProdutoDTO update(Integer id, ProdutoDTO prodDTO) {
+			
+				buscar(id);
+				ProdutoDTO  prodNew = prodDTO;
+				
+				Produto prod = repo.findById(id).get();
+				
+				if(prodNew.getNome() != null) {
+					prod.setNome(prodNew.getNome());
+				}
+				
+				if(prodNew.getDescricao()!= null) {
+					prod.setDescricao(prodNew.getDescricao());
+				}
+				if(prodNew.getUrlImagem()!= null) {
+					prod.setUrlImagem(prodNew.getUrlImagem());
+				}
+				if(prodNew.getPreco()!= null) {
+					prod.setPreco(prodNew.getPreco());
+				}
+				
+				repo.save(prod);
+				return prodNew;
+			
 		}
 }

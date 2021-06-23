@@ -28,6 +28,7 @@ public class Produto  implements Serializable {
 	private Integer id;
 	private String nome;
 	private Double preco;
+	private String descricao;
 	
 	@JsonIgnore
 	@ManyToMany
@@ -135,6 +136,14 @@ public class Produto  implements Serializable {
 
 	public void setUrlImagem(String urlImagem) {
 		this.urlImagem = urlImagem;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	
