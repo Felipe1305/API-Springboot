@@ -25,27 +25,27 @@ import com.serratec.apirestfull.domain.enums.TipoCliente;
 import com.serratec.apirestfull.repositories.ClienteRepository;
 import com.serratec.apirestfull.repositories.EnderecoRepository;
 import com.serratec.apirestfull.security.JWTService;
-import com.serratec.apirestfull.security.dto.LoginResponse;
+
 import com.serratec.apirestfull.service.exceptions.DataIntegrityException;
 import com.serratec.apirestfull.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
-	private static final String headerPrefix = "Bearer ";
+//	private static final String headerPrefix = "Bearer ";
 	
-	@Autowired
-	private JWTService jwtService;
+//	@Autowired
+//	private JWTService jwtService;
 	
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private PasswordEncoder passwordEnconder;
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
+//
+//    @Autowired
+//    private PasswordEncoder passwordEnconder;
 	@Autowired
 	private ClienteRepository repo;
 	
-	@Autowired
-	private EnderecoRepository repoEndreco;
+//	@Autowired
+//	private EnderecoRepository repoEndreco;
 
 		public Cliente buscar(Integer id) {
 			Optional<Cliente> obj = repo.findById(id);
@@ -108,19 +108,19 @@ public class ClienteService {
 			newObj.setNome(obj.getNome());
 			newObj.setEmail(obj.getEmail());
 		}
-		public LoginResponse logar(String email, String senha) {
-			
-			var usuario = repo.findByEmail(email);
-			System.out.println(usuario.toString());
-
-			Authentication autenticacao = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(email, senha, Collections.emptyList()));
-			
-			SecurityContextHolder.getContext().setAuthentication(autenticacao);
-			
-			String token = headerPrefix + jwtService.gerarToken(autenticacao);
-			
-			
-			return new LoginResponse(token, usuario.get());
-		}
+//		public LoginResponse logar(String email, String senha) {
+//			
+//			var usuario = repo.findByEmail(email);
+//			System.out.println(usuario.toString());
+//
+//			Authentication autenticacao = authenticationManager.authenticate(
+//					new UsernamePasswordAuthenticationToken(email, senha, Collections.emptyList()));
+//			
+//			SecurityContextHolder.getContext().setAuthentication(autenticacao);
+//			
+//			String token = headerPrefix + jwtService.gerarToken(autenticacao);
+//			
+//			
+//			return new LoginResponse(token, usuario.get());
+//		}
 }

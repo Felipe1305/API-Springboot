@@ -15,7 +15,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	@Transactional
 	Optional<Cliente> findByEmail(String email);
 	
-	Optional<Cliente> findById(Long id);
+//	Optional<Cliente> findById(Long id);
 	
 
 	
