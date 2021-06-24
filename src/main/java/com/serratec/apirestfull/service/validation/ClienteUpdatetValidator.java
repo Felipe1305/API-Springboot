@@ -3,6 +3,7 @@ package com.serratec.apirestfull.service.validation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
@@ -43,8 +44,8 @@ public class ClienteUpdatetValidator implements ConstraintValidator<ClienteUpdat
 		
 		// inclua os testes aqui, inserindo erros na lista
 		
-		Cliente aux = repo.findByEmail(objDto.getEmailDTO());
-		if(aux != null && !aux.getId().equals(uriId)) {
+		Optional<Cliente> aux = repo.findByEmail(objDto.getEmailDTO());
+		if(aux != null && !aux.get().getId().equals(uriId)) {
 			list.add(new FieldMessage("email", "Email já existente!"));
 		}
 

@@ -2,6 +2,7 @@ package com.serratec.apirestfull.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,11 +17,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.serratec.apirestfull.domain.enums.TipoCliente;
 
 @Entity
-public class Cliente implements Serializable {
+public class Cliente implements Serializable, UserDetails {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -44,11 +48,23 @@ public class Cliente implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	List<Pedido> pedidos = new ArrayList<>();
+	
+	private String senha;
 
 	public Cliente() {
 		super();
 	}
 
+	public Cliente(Integer id, String nome, String email, String cpfouCnpj, TipoCliente tipo, String senha) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.cpfouCnpj = cpfouCnpj;
+		this.tipo =(tipo==null) ? null : tipo.getCod();
+		this.senha=senha;
+	}
+	
 	public Cliente(Integer id, String nome, String email, String cpfouCnpj, TipoCliente tipo) {
 		super();
 		this.id = id;
@@ -56,6 +72,7 @@ public class Cliente implements Serializable {
 		this.email = email;
 		this.cpfouCnpj = cpfouCnpj;
 		this.tipo =(tipo==null) ? null : tipo.getCod();
+		
 	}
 
 	public Integer getId() {
@@ -145,6 +162,63 @@ public class Cliente implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@JsonIgnore
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@JsonIgnore
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 	
 	

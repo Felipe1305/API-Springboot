@@ -2,6 +2,7 @@ package com.serratec.apirestfull.service.validation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -40,7 +41,7 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 		
 		// inclua os testes aqui, inserindo erros na lista
 		
-		Cliente aux = repo.findByEmail(objDto.getEmail());
+		Optional<Cliente> aux = repo.findByEmail(objDto.getEmail());
 		if(aux != null) {
 			list.add(new FieldMessage("email", "Email já existente!"));
 		}

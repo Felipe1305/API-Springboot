@@ -1,5 +1,6 @@
 package com.serratec.apirestfull.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.serratec.apirestfull.DTO.ClienteDTO;
@@ -18,12 +24,23 @@ import com.serratec.apirestfull.domain.Endereco;
 import com.serratec.apirestfull.domain.enums.TipoCliente;
 import com.serratec.apirestfull.repositories.ClienteRepository;
 import com.serratec.apirestfull.repositories.EnderecoRepository;
+import com.serratec.apirestfull.security.JWTService;
+import com.serratec.apirestfull.security.dto.LoginResponse;
 import com.serratec.apirestfull.service.exceptions.DataIntegrityException;
 import com.serratec.apirestfull.service.exceptions.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
+	private static final String headerPrefix = "Bearer ";
 	
+	@Autowired
+	private JWTService jwtService;
+	
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PasswordEncoder passwordEnconder;
 	@Autowired
 	private ClienteRepository repo;
 	
@@ -39,7 +56,7 @@ public class ClienteService {
 		public Cliente insert(Cliente obj) {
 			obj.setId(null);
 			obj = repo.save(obj);
-			repoEndreco.saveAll(obj.getEnderecos());
+//			repoEndreco.saveAll(obj.getEnderecos());
 			return obj;
 		}
 		
@@ -69,11 +86,11 @@ public class ClienteService {
 		
 		public Cliente fromDTO(ClienteDTO objDTO) {
 			
-			return new Cliente(objDTO.getIdDTO(), objDTO.getNomeDTO(), objDTO.getEmailDTO(), null,null);
+			return new Cliente(objDTO.getIdDTO(), objDTO.getNomeDTO(), objDTO.getEmailDTO(), null,null, objDTO.getSenha());
 			
 		}
 		public Cliente fromDTO(ClienteNewDTO objDTO) {
-			Cliente cli = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfouCnpj(),TipoCliente.toEnum(objDTO.getTipo()));
+			Cliente cli = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfouCnpj(),TipoCliente.toEnum(objDTO.getTipo()), objDTO.getSenha());
 			Cidade cid = new Cidade(objDTO.getCidadeId(), null, null);
 			Endereco end = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(),objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), cli, cid);
 			cli.getEnderecos().add(end);
@@ -90,5 +107,20 @@ public class ClienteService {
 		private void updateData (Cliente newObj, Cliente obj) {
 			newObj.setNome(obj.getNome());
 			newObj.setEmail(obj.getEmail());
+		}
+		public LoginResponse logar(String email, String senha) {
+			
+			var usuario = repo.findByEmail(email);
+			System.out.println(usuario.toString());
+
+			Authentication autenticacao = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(email, senha, Collections.emptyList()));
+			
+			SecurityContextHolder.getContext().setAuthentication(autenticacao);
+			
+			String token = headerPrefix + jwtService.gerarToken(autenticacao);
+			
+			
+			return new LoginResponse(token, usuario.get());
 		}
 }
