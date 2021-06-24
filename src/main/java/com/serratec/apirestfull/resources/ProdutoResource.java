@@ -1,12 +1,15 @@
 package com.serratec.apirestfull.resources;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +27,7 @@ import com.serratec.apirestfull.service.ProdutoService;
 @RestController
 @RequestMapping(value = "/produtos")
 public class ProdutoResource {
+	List<ProdutoDTO> list = new ArrayList();
 
 	@Autowired
 	private ProdutoService service;
@@ -65,6 +69,18 @@ public class ProdutoResource {
 	@PutMapping("/{id}")
 	public ResponseEntity<ProdutoDTO> update(@PathVariable Integer id, @RequestBody ProdutoDTO prodDTO) {
 		return ResponseEntity.ok().header("Method: ", "Update").body(service.update(id, prodDTO));
+	}
+	
+	@PostMapping("/carrinho")
+	public void carrinho(@RequestBody ProdutoDTO prod){
+		
+		list.add(prod);
+	}
+	
+	@GetMapping("/carrinho")
+	public List<ProdutoDTO> carrinhoRetorno(@RequestBody ProdutoDTO prod){
+		
+		return list;
 	}
 
 }
