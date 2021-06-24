@@ -74,7 +74,13 @@ public class ProdutoResource {
 	@PostMapping("/carrinho")
 	public void carrinho(@RequestBody ProdutoDTO prod){
 		
-		list.add(prod);
+		ProdutoDTO dto = new ProdutoDTO();
+		dto.setNome(prod.getNome());
+		dto.setDescricao(prod.getDescricao());
+		dto.setPreco(prod.getPreco());
+		dto.setUrlImagem(prod.getUrlImagem());
+		dto.setId(prod.getId());
+		list.add(dto);
 	}
 	
 	@GetMapping("/carrinho")
