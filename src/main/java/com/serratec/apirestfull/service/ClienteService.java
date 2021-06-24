@@ -24,7 +24,7 @@ import com.serratec.apirestfull.domain.Endereco;
 import com.serratec.apirestfull.domain.enums.TipoCliente;
 import com.serratec.apirestfull.repositories.ClienteRepository;
 import com.serratec.apirestfull.repositories.EnderecoRepository;
-import com.serratec.apirestfull.security.JWTService;
+
 
 import com.serratec.apirestfull.service.exceptions.DataIntegrityException;
 import com.serratec.apirestfull.service.exceptions.ObjectNotFoundException;
