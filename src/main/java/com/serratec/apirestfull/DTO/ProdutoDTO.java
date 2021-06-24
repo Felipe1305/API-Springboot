@@ -13,6 +13,7 @@ public class ProdutoDTO implements Serializable {
 	private Double preco;
 	private String descricao;
 	private String urlImagem;
+	private Integer quantidadeEstoque;
 	
 	
 	public ProdutoDTO() {
@@ -64,6 +65,16 @@ public class ProdutoDTO implements Serializable {
 
 	public void setUrlImagem(String urlImagem) {
 		this.urlImagem = urlImagem;
+	}
+
+
+	public Integer getQuantidadeEstoque() {
+		return quantidadeEstoque;
+	}
+
+
+	public void setQuantidadeEstoque(Integer quantidadeEstoque) {
+		this.quantidadeEstoque = quantidadeEstoque;
 	}
 
 	

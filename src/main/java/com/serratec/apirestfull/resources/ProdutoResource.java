@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -75,11 +76,11 @@ public class ProdutoResource {
 	public void carrinho(@RequestBody ProdutoDTO prod){
 		
 		ProdutoDTO dto = new ProdutoDTO();
+		dto.setId(prod.getId());
 		dto.setNome(prod.getNome());
 		dto.setDescricao(prod.getDescricao());
 		dto.setPreco(prod.getPreco());
 		dto.setUrlImagem(prod.getUrlImagem());
-		dto.setId(prod.getId());
 		list.add(dto);
 	}
 	
@@ -87,6 +88,23 @@ public class ProdutoResource {
 	public List<ProdutoDTO> carrinhoRetorno(@RequestBody ProdutoDTO prod){
 		
 		return list;
+	}
+	
+	@DeleteMapping("/carrinho/{id}")
+	public void retirarItemCarrinho(@PathVariable Integer id) {
+		for (ProdutoDTO prodDTO : list) {
+			if(prodDTO.getId()==id) {
+				list.remove(prodDTO);
+			}
+		}
+	}
+	@PutMapping("/carrinho/{id}")
+	public void atualizarQuantidade(@PathVariable Integer id, @RequestBody ProdutoDTO prod) {
+		for (ProdutoDTO prodUp : list) {
+			if(prodUp.getId()==id) {
+				prodUp.setQuantidadeEstoque(prod.getQuantidadeEstoque());
+			}
+		}
 	}
 
 }
