@@ -12,7 +12,7 @@ import com.serratec.apirestfull.service.DBService;
 @Configuration
 @Profile("dev")
 public class DevConfig {
-	
+	//Cometário aleatório de teste
 	@Autowired private DBService dbService;
 	
 	@Bean

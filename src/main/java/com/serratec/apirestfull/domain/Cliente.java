@@ -2,7 +2,7 @@ package com.serratec.apirestfull.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,14 +17,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.serratec.apirestfull.domain.enums.TipoCliente;
 
 @Entity
-public class Cliente implements Serializable, UserDetails {
+public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -62,7 +61,7 @@ public class Cliente implements Serializable, UserDetails {
 		this.email = email;
 		this.cpfouCnpj = cpfouCnpj;
 		this.tipo =(tipo==null) ? null : tipo.getCod();
-		this.senha=senha;
+		this.setSenha(senha);
 	}
 	
 	public Cliente(Integer id, String nome, String email, String cpfouCnpj, TipoCliente tipo) {
@@ -164,55 +163,6 @@ public class Cliente implements Serializable, UserDetails {
 		return true;
 	}
 
-	@Override
-	@JsonIgnore
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	@JsonIgnore
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	@JsonIgnore
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	@JsonIgnore
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public String getSenha() {
 		return senha;
 	}
@@ -220,6 +170,8 @@ public class Cliente implements Serializable, UserDetails {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+
+	
 	
 	
  
