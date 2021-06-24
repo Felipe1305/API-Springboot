@@ -85,10 +85,11 @@ public class ProdutoResource {
 	}
 	
 	@GetMapping("/carrinho")
-	public List<ProdutoDTO> carrinhoRetorno(@RequestBody ProdutoDTO prod){
-		
-		return list;
+	public ResponseEntity<List<ProdutoDTO>> carrinhoRetorno() {
+		return ResponseEntity.ok().header("Method: ", "Update").body(list);
 	}
+	
+	
 	
 	@DeleteMapping("/carrinho/{id}")
 	public void retirarItemCarrinho(@PathVariable Integer id) {
