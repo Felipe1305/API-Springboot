@@ -8,9 +8,8 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.serratec.apirestfull.domain.Cliente;
-import com.serratec.apirestfull.service.validation.ClienteUpdate;
 
-@ClienteUpdate
+
 public class ClienteDTO implements Serializable {
 	/**
 	 * 
