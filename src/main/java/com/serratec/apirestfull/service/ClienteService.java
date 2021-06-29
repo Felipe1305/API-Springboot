@@ -1,6 +1,5 @@
 package com.serratec.apirestfull.service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,11 +16,11 @@ import com.serratec.apirestfull.DTO.ClienteNewDTO;
 import com.serratec.apirestfull.domain.Cidade;
 import com.serratec.apirestfull.domain.Cliente;
 import com.serratec.apirestfull.domain.Endereco;
+import com.serratec.apirestfull.domain.enums.Perfil;
 import com.serratec.apirestfull.domain.enums.TipoCliente;
 import com.serratec.apirestfull.repositories.ClienteRepository;
-import com.serratec.apirestfull.repositories.EnderecoRepository;
-
-
+import com.serratec.apirestfull.security.UserSS;
+import com.serratec.apirestfull.service.exceptions.AuthorizationException;
 import com.serratec.apirestfull.service.exceptions.DataIntegrityException;
 import com.serratec.apirestfull.service.exceptions.ObjectNotFoundException;
 
@@ -43,13 +42,22 @@ public class ClienteService {
 	
 //	@Autowired
 //	private EnderecoRepository repoEndreco;
+	
+	
 
 		public Cliente buscar(Integer id) {
+			
+			UserSS user = UserService.authenticated();
+			if(user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+				throw new AuthorizationException("Acesso negado!");
+			}
+			
 			Optional<Cliente> obj = repo.findById(id);
 			return obj.orElseThrow(() -> new ObjectNotFoundException(
 					"Cliente não encontrado! ID: "+id+", Tipo: "+Cliente.class.getName()));
 		}
 		
+
 		public Cliente insert(Cliente obj) {
 			obj.setId(null);
 			obj = repo.save(obj);

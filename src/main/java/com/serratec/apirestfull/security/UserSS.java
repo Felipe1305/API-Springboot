@@ -26,6 +26,8 @@ public class UserSS implements UserDetails{
 		this.authorities = perfis.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao()))
 				.collect(Collectors.toList());
 	}
+	
+	
 
 	public UserSS() {
 		super();
@@ -75,6 +77,11 @@ public class UserSS implements UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public boolean hasRole(Perfil perfil) {
+		
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
 	}
 
 }
