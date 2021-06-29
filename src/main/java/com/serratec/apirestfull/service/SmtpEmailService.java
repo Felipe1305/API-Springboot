@@ -13,7 +13,8 @@ public class SmtpEmailService extends AbstractEmailService{
 	
 	@Autowired private MailSender mailSender;
 	
-	@Autowired private JavaMailSender javaMailSender;
+	@Autowired(required = false)
+	private JavaMailSender javaMailSender;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SmtpEmailService.class);
 	
