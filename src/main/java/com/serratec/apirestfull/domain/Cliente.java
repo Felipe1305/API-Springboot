@@ -2,7 +2,6 @@ package com.serratec.apirestfull.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,8 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.serratec.apirestfull.domain.enums.TipoCliente;
 
@@ -37,6 +35,8 @@ public class Cliente implements Serializable {
 	private Integer tipo;
 	
 	
+	
+	
 	@OneToMany(mappedBy="cliente", cascade=CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
 	
@@ -48,6 +48,7 @@ public class Cliente implements Serializable {
 	@OneToMany(mappedBy = "cliente")
 	List<Pedido> pedidos = new ArrayList<>();
 	
+	@JsonBackReference
 	private String senha;
 
 	public Cliente() {
@@ -64,15 +65,15 @@ public class Cliente implements Serializable {
 		this.setSenha(senha);
 	}
 	
-	public Cliente(Integer id, String nome, String email, String cpfouCnpj, TipoCliente tipo) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.email = email;
-		this.cpfouCnpj = cpfouCnpj;
-		this.tipo =(tipo==null) ? null : tipo.getCod();
-		
-	}
+//	public Cliente(Integer id, String nome, String email, String cpfouCnpj, TipoCliente tipo) {
+//		super();
+//		this.id = id;
+//		this.nome = nome;
+//		this.email = email;
+//		this.cpfouCnpj = cpfouCnpj;
+//		this.tipo =(tipo==null) ? null : tipo.getCod();
+//		
+//	}
 
 	public Integer getId() {
 		return id;
