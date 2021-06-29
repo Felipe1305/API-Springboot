@@ -7,8 +7,12 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.serratec.apirestfull.domain.Cliente;
 import com.serratec.apirestfull.domain.ItemPedido;
 import com.serratec.apirestfull.domain.PagamentoComBoleto;
 import com.serratec.apirestfull.domain.Pedido;
@@ -18,6 +22,8 @@ import com.serratec.apirestfull.repositories.ItemPedidoRepository;
 import com.serratec.apirestfull.repositories.PagamentoRepository;
 import com.serratec.apirestfull.repositories.PedidoRepository;
 import com.serratec.apirestfull.repositories.ProdutoRepository;
+import com.serratec.apirestfull.security.UserSS;
+import com.serratec.apirestfull.service.exceptions.AuthorizationException;
 import com.serratec.apirestfull.service.exceptions.ObjectNotFoundException;
 
 @Service
@@ -41,6 +47,8 @@ public class PedidoService {
 	@Autowired ProdutoRepository prodRepo;
 	
 	@Autowired private EmailService emailService;
+	
+	@Autowired ClienteService clienteService;
 	
 	
 
@@ -75,5 +83,16 @@ public class PedidoService {
 			
 			emailService.sendOrderConfirmationHtmlEmail(obj);
 			return obj;
+		}
+		
+		public Page<Pedido> buscandoPorPaginas(Integer page, Integer linhasPorPagina, String orderBy, String direction){
+			UserSS user = UserService.authenticated();
+			if(user==null ) {
+				throw new AuthorizationException("Acesso negado!");
+			}
+			
+			PageRequest pageRequest = PageRequest.of(page, linhasPorPagina,Direction.valueOf(direction), orderBy);
+			Cliente cliente = clienteService.buscar(user.getId());
+			return repo.findByCliente(cliente,pageRequest);
 		}
 }
