@@ -41,6 +41,8 @@ public class PedidoService {
 	@Autowired ProdutoRepository prodRepo;
 	
 	@Autowired private EmailService emailService;
+	
+	
 
 		public Pedido buscar(Integer id) {
 			Optional<Pedido> obj = repo.findById(id);
