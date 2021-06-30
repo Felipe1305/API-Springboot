@@ -8,9 +8,11 @@ public class ValidationError extends StandardError {
 	
 	private List<FieldMessage> errors = new ArrayList<>();
 
-	public ValidationError(Integer status, String msg, Long timeStamp) {
-		super(status, msg, timeStamp);
-		// TODO Auto-generated constructor stub
+	
+
+	public ValidationError(Integer status, Long timestamp, String error, String message, String path) {
+		super(status, timestamp, error, message, path);
+		
 	}
 
 	public List<FieldMessage> getErrors() {
