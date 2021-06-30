@@ -40,13 +40,16 @@ public class ClienteResource {
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<Cliente> find(@PathVariable Integer id) {
-		
-		
 		Cliente obj = service.buscar(id);
 		return ResponseEntity.ok().body(obj);
-		
-		
 	}
+	
+	@RequestMapping(value="/email",method=RequestMethod.GET)
+	public ResponseEntity<Cliente> findByEmail(@RequestParam(value="value") String email) {
+		Cliente obj = service.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert( @RequestBody ClienteDTO objDTO) {
@@ -63,6 +66,8 @@ public class ClienteResource {
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
+	
+	
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
