@@ -1,10 +1,12 @@
 package com.serratec.apirestfull.service;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +45,11 @@ public class ClienteService {
 	private ClienteRepository repo;
 	
 	@Autowired S3Service s3service;
+	
+	@Autowired private ImageService imageService;
+	
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 	
 //	@Autowired
 //	private EnderecoRepository repoEndreco;
@@ -132,18 +139,32 @@ public class ClienteService {
 //			
 //			return new LoginResponse(token, usuario.get());
 //		}
+		//Método utilizado para enviar um arquivo apartir do postman, 
+		//Salvando a URI no banco de DADOS
+//		public URI uploadPicture(MultipartFile multipartFile) {
+//			UserSS user = UserService.authenticated();
+//			if(user == null ) {
+//				throw new AuthorizationException("Acesso negado");
+//			}
+//			URI uri = s3service.uploadFile(multipartFile);
+//			//Ele encontra o cliente e salva os dados no mesmo
+//			//porque ele é uma unidade monitorada pelo banco de Dados
+//			Cliente cli = repo.findById(user.getId()).get();
+//			
+//			cli.setImageUrl(uri.toString());
+//			repo.save(cli);
+//			return uri;
+//		}
 		
 		public URI uploadPicture(MultipartFile multipartFile) {
 			UserSS user = UserService.authenticated();
 			if(user == null ) {
 				throw new AuthorizationException("Acesso negado");
 			}
-			URI uri = s3service.uploadFile(multipartFile);
+			BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+			String fileName = prefix + user.getId() +".jpg";
 			
-			Cliente cli = repo.findById(user.getId()).get();
-			
-			cli.setImageUrl(uri.toString());
-			repo.save(cli);
-			return uri;
+			return s3service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+	
 		}
 }
