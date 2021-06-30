@@ -55,6 +55,8 @@ public class Cliente implements Serializable {
 	
 	@JsonBackReference
 	private String senha;
+	
+	private String imageUrl;
 
 	public Cliente() {
 	addPerfil(Perfil.CLIENTE);
@@ -146,6 +148,14 @@ public class Cliente implements Serializable {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
+	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}; 
 
 	@Override
 	public int hashCode() {
@@ -185,7 +195,9 @@ public class Cliente implements Serializable {
 	 
 	 public void addPerfil(Perfil perfil) {
 		 perfis.add(perfil.getCod());
-	 }; 
+	 }
+
+	
 	
  
 }
