@@ -1,5 +1,6 @@
 package com.serratec.apirestfull.service;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.serratec.apirestfull.DTO.ClienteDTO;
 import com.serratec.apirestfull.DTO.ClienteNewDTO;
@@ -39,6 +41,8 @@ public class ClienteService {
 	
 	@Autowired
 	private ClienteRepository repo;
+	
+	@Autowired S3Service s3service;
 	
 //	@Autowired
 //	private EnderecoRepository repoEndreco;
@@ -128,4 +132,8 @@ public class ClienteService {
 //			
 //			return new LoginResponse(token, usuario.get());
 //		}
+		
+		public URI uploadPicture(MultipartFile multipartFile) {
+			return s3service.uploadFile(multipartFile);
+		}
 }
